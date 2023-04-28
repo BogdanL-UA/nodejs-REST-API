@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { handleMongooseError } = require("../utils/index");
+const { verify } = require("crypto");
 
 const userSchema = new Schema(
   {
@@ -20,6 +21,14 @@ const userSchema = new Schema(
     },
     token: { type: String, default: "" },
     avatarURL: { type: String, default: "" },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationCode: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -37,9 +46,14 @@ const loginSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
 const schema = {
   registerSchema,
   loginSchema,
+  emailSchema,
 };
 
 const User = model("user", userSchema);

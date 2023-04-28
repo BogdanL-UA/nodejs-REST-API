@@ -18,6 +18,14 @@ router.get("/current", authenticate, ctrl.getCurrent);
 
 router.post("/logout", authenticate, ctrl.logout);
 
+router.get("/verify/:verificationCode", ctrl.verify);
+
+router.post(
+  "/resend-verify-email",
+  validateBody(schema.emailSchema),
+  ctrl.resendVerifyEmail
+);
+
 router.patch(
   "/avatars",
   authenticate,
